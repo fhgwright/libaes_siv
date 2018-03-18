@@ -28,14 +28,17 @@ find_program(A2X a2x)
 configure_file(config.h.in config.h)
 
 add_library(aes_siv SHARED aes_siv.c)
+target_include_directories(aes_siv PUBLIC ${OPENSSL_INCLUDE_DIR})
 target_link_libraries(aes_siv ${OPENSSL_CRYPTO_LIBRARY})
 set_target_properties(aes_siv PROPERTIES VERSION "1.0.0" SOVERSION 1)
 
 add_library(aes_siv_static STATIC aes_siv.c)
+target_include_directories(aes_siv_static PUBLIC ${OPENSSL_INCLUDE_DIR})
 target_link_libraries(aes_siv_static ${OPENSSL_CRYPTO_LIBRARY})
 set_target_properties(aes_siv_static PROPERTIES OUTPUT_NAME aes_siv)
 
 add_executable(runtests aes_siv_test.c tests.c)
+target_include_directories(runtests PUBLIC ${OPENSSL_INCLUDE_DIR})
 target_link_libraries(runtests ${OPENSSL_CRYPTO_LIBRARY})
 if(ENABLE_COVERAGE)
   target_compile_options(runtests PRIVATE "--coverage")
